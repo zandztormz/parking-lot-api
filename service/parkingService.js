@@ -1,6 +1,6 @@
 const ParkingLot = require("../models/parking_lot.model");
+const { SLOT_STATUS } = require("../libs/constants");
 const getParkingStatus = () => ParkingLot.find();
-
 const findNearestParkingSlot = async (floor, carSize) => {
   const parkingLots = await ParkingLot.aggregate([
     {
@@ -18,12 +18,13 @@ const findNearestParkingSlot = async (floor, carSize) => {
 
   return parkingLots.filter(
     (parks) =>
-      parks.slots.filter((value) => value.status === "available").length > 0
+      parks.slots.filter((value) => value.status === SLOT_STATUS.AVAILABLE)
+        .length > 0
   )[0];
 };
 
 const findAvailableSlot = (parkingLots) =>
-  parkingLots.slots.filter((val) => val.status === "available")[0];
+  parkingLots.slots.filter((val) => val.status === SLOT_STATUS.AVAILABLE)[0];
 
 const releaseParkingSlot = async (ticket) => {
   const { slotID, size, parkingId } = ticket;
@@ -34,7 +35,7 @@ const releaseParkingSlot = async (ticket) => {
     },
     {
       $set: {
-        [`slots.${size}.$.status`]: "available",
+        [`slots.${size}.$.status`]: SLOT_STATUS.AVAILABLE,
       },
     }
   );
@@ -48,7 +49,7 @@ const allocatedParkingSlot = async (parkingLotId, size, slotId) => {
     },
     {
       $set: {
-        [`slots.${size}.$.status`]: "unavailable",
+        [`slots.${size}.$.status`]: SLOT_STATUS.UNAVAILABLE,
       },
     }
   );
@@ -64,7 +65,7 @@ const createParkingLot = (params) => {
       slotSize++;
       slot.push({
         slotID: slotSize,
-        status: "available",
+        status: SLOT_STATUS.AVAILABLE,
       });
     }
     parkingSlot.set(value, slot);

@@ -1,12 +1,13 @@
 const ticketService = require("../service/ticketService");
 const parkingService = require("../service/parkingService");
+const { HTTP_CODE } = require("../libs/constants");
 
 const create = async (req, res) => {
   try {
     res.status(201).send(await parkingService.createParkingLot(req.body));
   } catch (e) {
-    res.status(500).send({
-      code: 500,
+    res.status(HTTP_CODE.INTERNAL_ERROR).send({
+      code: HTTP_CODE.INTERNAL_ERROR,
       message: e.message,
     });
   }
@@ -16,8 +17,8 @@ const getStatus = async (req, res) => {
   try {
     res.send(await parkingService.getParkingStatus());
   } catch (e) {
-    res.status(400).send({
-      code: 400,
+    res.status(HTTP_CODE.INTERNAL_ERROR).send({
+      code: HTTP_CODE.INTERNAL_ERROR,
       message: e.message,
     });
   }
@@ -31,10 +32,17 @@ const allocated = async (req, res) => {
     }
     res.send(await ticketService.getAllocatedByCarSize(size));
   } catch (e) {
-    res.status(400).send({
-      code: 400,
-      message: e.message,
-    });
+    if (e.message === "Car size is required") {
+      res.status(HTTP_CODE.BAD_REQUEST).send({
+        code: HTTP_CODE.BAD_REQUEST,
+        message: e.message,
+      });
+    } else {
+      res.status(HTTP_CODE.INTERNAL_ERROR).send({
+        code: HTTP_CODE.INTERNAL_ERROR,
+        message: e.message,
+      });
+    }
   }
 };
 

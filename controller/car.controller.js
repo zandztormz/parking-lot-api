@@ -1,6 +1,8 @@
 const ticketService = require("../service/ticketService");
 const parkingService = require("../service/parkingService");
-const park = async (req, res, next) => {
+const { HTTP_CODE } = require("../libs/constants");
+
+const park = async (req, res) => {
   const { size, floor, plateNumber } = req.body;
   try {
     const parkingLots = await parkingService.findNearestParkingSlot(
@@ -31,10 +33,17 @@ const park = async (req, res, next) => {
       message: `Ticket has created`,
     });
   } catch (e) {
-    res.status(500).send({
-      code: 500,
-      message: e.message,
-    });
+    if (e.message === "no available slot") {
+      res.status(HTTP_CODE.NOT_FOUND).send({
+        code: HTTP_CODE.NOT_FOUND,
+        message: e.message,
+      });
+    } else {
+      res.status(HTTP_CODE.INTERNAL_ERROR).send({
+        code: HTTP_CODE.INTERNAL_ERROR,
+        message: e.message,
+      });
+    }
   }
 };
 
@@ -49,8 +58,8 @@ const leave = async (req, res, next) => {
       message: `Ticket has exited`,
     });
   } catch (e) {
-    res.status(500).send({
-      code: 500,
+    res.status(HTTP_CODE.INTERNAL_ERROR).send({
+      code: HTTP_CODE.INTERNAL_ERROR,
       message: e.message,
     });
   }

@@ -1,3 +1,4 @@
+const { HTTP_CODE } = require("../libs/constants");
 const ticketService = require("../service/ticketService");
 const getTicket = async (req, res, next) => {
   const { size } = req.query;
@@ -8,10 +9,17 @@ const getTicket = async (req, res, next) => {
 
     res.send(await ticketService.getRegistrationPlateNumberByCarSize(size));
   } catch (e) {
-    res.status(400).send({
-      code: 400,
-      message: e.message,
-    });
+    if (e.message === "Car size is required") {
+      res.status(HTTP_CODE.BAD_REQUEST).send({
+        code: HTTP_CODE.BAD_REQUEST,
+        message: e.message,
+      });
+    } else {
+      res.status(HTTP_CODE.INTERNAL_ERROR).send({
+        code: HTTP_CODE.INTERNAL_ERROR,
+        message: e.message,
+      });
+    }
   }
 };
 module.exports = {
