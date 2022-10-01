@@ -4,7 +4,9 @@ const { HTTP_CODE } = require("../libs/constants");
 
 const create = async (req, res) => {
   try {
-    res.status(201).send(await parkingService.createParkingLot(req.body));
+    res
+      .status(HTTP_CODE.CREATED)
+      .send(await parkingService.createParkingLot(req.body));
   } catch (e) {
     res.status(HTTP_CODE.INTERNAL_ERROR).send({
       code: HTTP_CODE.INTERNAL_ERROR,
