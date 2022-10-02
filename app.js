@@ -7,9 +7,11 @@ require("dotenv").config();
 var indexRouter = require("./routes/index");
 
 const mongoose = require("mongoose");
-mongoose.connect(`mongodb://${process.env.DB_HOST}/parkingLot`, {
-  autoIndex: true,
-});
+if (process.env.NODE_ENV !== "test") {
+  mongoose.connect(`mongodb://${process.env.DB_HOST}/parkingLot`, {
+    autoIndex: true,
+  });
+}
 
 var app = express();
 

@@ -28,7 +28,7 @@ const findAvailableSlot = (parkingLots) =>
 
 const releaseParkingSlot = async (ticket) => {
   const { slotID, size, parkingId } = ticket;
-  await ParkingLot.updateOne(
+  return await ParkingLot.updateOne(
     {
       _id: parkingId,
       [`slots.${size}.slotID`]: slotID,

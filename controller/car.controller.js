@@ -13,7 +13,6 @@ const park = async (req, res) => {
       throw new Error("no available slot");
     }
     const availableSlot = parkingService.findAvailableSlot(parkingLots);
-
     const createdTicket = await ticketService.createTicket(
       plateNumber,
       size,
@@ -28,7 +27,7 @@ const park = async (req, res) => {
     );
 
     res.send({
-      code: 200,
+      code: HTTP_CODE.CREATED,
       data: createdTicket,
       message: `Ticket has created`,
     });
@@ -51,6 +50,12 @@ const leave = async (req, res, next) => {
   const { id } = req.body;
   try {
     const ticket = await ticketService.findTicketById(id);
+    if (ticket.length === 0) {
+      throw new Error("ticket not found");
+    }
+    if (ticket.exitedAt) {
+      throw new Error("ticket has already exited");
+    }
     await parkingService.releaseParkingSlot(ticket);
     await ticketService.stampExit(ticket);
     res.send({
@@ -58,10 +63,22 @@ const leave = async (req, res, next) => {
       message: `Ticket has exited`,
     });
   } catch (e) {
-    res.status(HTTP_CODE.INTERNAL_ERROR).send({
-      code: HTTP_CODE.INTERNAL_ERROR,
-      message: e.message,
-    });
+    if (e.message === "ticket not found") {
+      res.status(HTTP_CODE.NOT_FOUND).send({
+        code: HTTP_CODE.NOT_FOUND,
+        message: e.message,
+      });
+    } else if (e.message === "ticket has already exited") {
+      res.status(HTTP_CODE.UNPROCESSABLE_ENTITY).send({
+        code: HTTP_CODE.UNPROCESSABLE_ENTITY,
+        message: "ticket has already exited",
+      });
+    } else {
+      res.status(HTTP_CODE.INTERNAL_ERROR).send({
+        code: HTTP_CODE.INTERNAL_ERROR,
+        message: e.message,
+      });
+    }
   }
 };
 

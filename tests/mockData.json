@@ -1,0 +1,75 @@
+{
+  "name": "Central World Floor 4",
+  "floor": 4,
+  "slots": {
+    "s": [
+      {
+        "slotID": 1,
+        "status": "available"
+      },
+      {
+        "slotID": 2,
+        "status": "available"
+      }
+    ],
+    "m": [
+      {
+        "slotID": 3,
+        "status": "available"
+      },
+      {
+        "slotID": 4,
+        "status": "available"
+      }
+    ],
+    "l": [
+      {
+        "slotID": 5,
+        "status": "available"
+      },
+      {
+        "slotID": 6,
+        "status": "available"
+      }
+    ],
+    "xl": [
+      {
+        "slotID": 7,
+        "status": "available"
+      },
+      {
+        "slotID": 8,
+        "status": "available"
+      }
+    ],
+    "xxl": [
+      {
+        "slotID": 9,
+        "status": "available"
+      },
+      {
+        "slotID": 10,
+        "status": "available"
+      },
+      {
+        "slotID": 11,
+        "status": "available"
+      },
+      {
+        "slotID": 12,
+        "status": "available"
+      },
+      {
+        "slotID": 13,
+        "status": "available"
+      },
+      {
+        "slotID": 14,
+        "status": "available"
+      }
+    ]
+  },
+  "_id": "6337415fde48506fda46dba6",
+  "createdAt": "2022-09-30T19:19:59.004Z",
+  "updatedAt": "2022-09-30T19:19:59.004Z"
+}

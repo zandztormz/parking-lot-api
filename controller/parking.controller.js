@@ -8,8 +8,8 @@ const create = async (req, res) => {
       .status(HTTP_CODE.CREATED)
       .send(await parkingService.createParkingLot(req.body));
   } catch (e) {
-    res.status(HTTP_CODE.INTERNAL_ERROR).send({
-      code: HTTP_CODE.INTERNAL_ERROR,
+    res.status(HTTP_CODE.BAD_REQUEST).send({
+      code: HTTP_CODE.BAD_REQUEST,
       message: e.message,
     });
   }
