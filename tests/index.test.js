@@ -18,4 +18,7 @@ describe("GET /", () => {
       done
     );
   });
+  it("return 404", (done) => {
+    request(server).get("/foo").expect(HTTP_CODE.NOT_FOUND, done);
+  });
 });

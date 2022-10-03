@@ -53,7 +53,8 @@ const getRegistrationPlateNumberByCarSize = (size) =>
         _id: 0,
       },
     },
-  ]).sort({ plateNumber: -1 });
+    { $sort: { plateNumber: -1 } },
+  ]);
 
 module.exports = {
   findTicketById,
