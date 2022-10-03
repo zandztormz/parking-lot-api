@@ -15,5 +15,5 @@ docker exec -it parking-lot-api sh
 - GET `/parking/allocated?size=xl` for getting allocated slots by size (the response includes the floor, slot, and registration plate numbers).
 - POST `/car/park` for allocating a nearest available slot (floor, slot number)  when a car is parked by size (s, m, l), floor to enter.
 - POST `/car/leave` for releasing a slot (a car leaves the parking slot).
-- POST `/ticket?size=xl` for getting registration plate number and total of car parked
+- POST `/ticket?size=xl` for getting registration plate number and total of parked
 
