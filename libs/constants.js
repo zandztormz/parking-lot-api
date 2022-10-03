@@ -12,6 +12,6 @@ module.exports = {
   },
   SLOT_STATUS: {
     AVAILABLE: "available",
-    UNAVAILABLE: "UNAVAILABLE",
+    UNAVAILABLE: "unavailable",
   },
 };
